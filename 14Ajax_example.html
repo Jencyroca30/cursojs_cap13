@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12 capit 13</title>
+    <style>
+        .toggle {
+            padding: 10px;
+            background-color: rgb(245, 246, 150);
+            font-size: 1.3em;
+            margin: 10px;
+        }
+
+        .active {
+            background-color: rgb(114, 158, 96);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div>Asynchronous JavaScript And XML</div>
+    <div id="output">Complete JavaScript Course</div><br>
+    user: <input type="text" id="iduser">
+    id: <input type="text" id="idpost">
+    Title<input type="text" id="title">
+    Body<input type="text" id="body">
+    <input type="button" value="add">
+
+    <script>
+        let output = document.getElementById('output');
+        let cliker;
+        let clases;
+        let post = [];
+
+        let addPost = document.querySelector('input[type="button"]');
+
+        addPost.addEventListener('click', function (e) { //tomar los valores del los campos al precionar add
+
+            let add_user = document.getElementById('iduser').value;
+            let add_id = document.getElementById('idpost').value;
+            let add_title = document.getElementById('title').value;
+            let add_body = document.getElementById('body').value;
+            messaje(add_user.value, add_id.value, add_title.value, add_body.value);
+
+            post.push({
+                userId: add_user,
+                id: add_id,
+                title: add_title,
+                body: add_body
+
+
+
+            })
+
+            console.log(post);
+
+        })
+
+        window.onload = init;
+        output.addEventListener('click', function (e) {
+            clases = e.target;
+            clases.classList.toggle('active');
+
+        })
+
+
+        function build() {
+            for (let x = 0; x < post.length; x++) {
+
+                messaje(post[x].id, post[x].title, post[x].body, post[x].userId, ' active');
+            }
+
+        }
+
+        function messaje(id, title, body, userId, clase) {
+
+            output.innerHTML += '<div class= toggle ' + clase + '> Id: ' + id + ' Title:' + title + '</div>'
+        }
+
+
+        function init() {
+
+            loadJSON(function (response) {
+                post = JSON.parse(response);
+                console.log(post);
+                build();
+
+
+            });
+        }
+
+        function loadJSON(callback) {
+            let xHR = new XMLHttpRequest;
+            xHR.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    callback(this.responseText);
+                } else {
+                    return false;
+                }
+
+            }
+
+            xHR.open('GET', 'https://jsonplaceholder.typicode.com/posts', true);
+            xHR.send();
+
+            console.log(xHR);
+
+        }
+    </script>
+</body>
+
+</html>

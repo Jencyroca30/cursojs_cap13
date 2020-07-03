@@ -1,0 +1,13 @@
+[{
+    "name": "Carlos",
+    "guest": 6,
+    "status": true
+}, {
+    "name": "Jency",
+    "guest": 5,
+    "status": false
+}, {
+    "name": "Nohemi",
+    "guest": 4,
+    "status": false
+}]

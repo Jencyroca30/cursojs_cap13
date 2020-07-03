@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12 capit 13</title>
+</head>
+
+<body>
+    <div>Asynchronous JavaScript And XML</div>
+    <div id="output">Complete JavaScript Course</div><br>
+    Guest Name: <input type="text" id="guestName">
+    Extras: <input type="Number" id="gustNum" value="0">
+    <input type="button" value="add">
+
+    <script>
+        window.onload = init();
+
+        function init() {
+            loadJSON();
+        }
+
+
+        //Accdeder a las propiedades de las respuestas de un Ajax
+        function loadJSON(callback) {
+            let xHR = new XMLHttpRequest;
+            xHR.onreadystatechange = function () {
+
+                if (this.readyState == 4 && this.status == 200) {
+
+                    let myObjet = JSON.parse(this.responseText);
+                    console.log(myObjet);
+                }
+
+            }
+            //
+            xHR.open('GET', 'https://jsonplaceholder.typicode.com/posts', true);
+            xHR.send();
+
+            console.log(xHR);
+
+        }
+    </script>
+</body>
+
+</html>

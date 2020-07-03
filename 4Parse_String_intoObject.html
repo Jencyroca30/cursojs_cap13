@@ -4,7 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>4 captulo 13</title>
+    <title>4_6 captulo 13</title>
+    <style>
+        .toggle {
+            padding: 10px;
+            background-color: rgb(245, 246, 150);
+            font-size: 1.3em;
+            margin: 10px;
+        }
+
+        .active {
+            background-color: aquamarine;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
@@ -17,7 +30,9 @@
     <script src="4json_guess.json"></script>
     <script>
         let output = document.getElementById('output');
-        let party = JSON.parse(data);
+        let clicker;
+        window.onload = buildList;
+        let party = [];
         /*  console.log(party);
          console.log(party[0].name);
          console.log(party[2].name);
@@ -29,31 +44,62 @@
             let g = document.getElementById('guestName');
             let n = document.getElementById('guestNum');
             let a = document.getElementById('con');
-            message(g.value, n.value, con.checked, party.length);
+            let confir = con.checked ? ' active' : '';
+            message(g.value, n.value, con.checked, party.length, confir);
             //pasar la informacion al JSON
             party.push({
                 name: g.value,
                 guest: Number(n.value),
-                status: Boolean(con.value)
+                status: Boolean(con.checked)
             })
 
-
-            console.log(party);
+            localStorage.setItem('party', JSON.stringify(party));
             g.value = "";
             n.value = 0;
             con.checked = false;
 
         })
 
+        output.addEventListener('click', function (e) {
+
+            clicker = e.target;
+            let ds = clicker.dataset;
+            clicker.classList.toggle('active');
+            //party[ds.id].status = party[ds.id].status ? false : true;
+            localStorage.setItem('party', JSON.stringify(party));
+
+
+
+
+
+
+        })
+
         function buildList() {
+            if (localStorage.getItem('party')) {
+                party = JSON.parse(localStorage.getItem('party'))
+            } else {
+                party = JSON.parse(data)
+            }
+            for (let x = 0; x < party.length; x++) {
+
+
+                let invt = party[x].status;
+                if (invt === true) {
+                    message(party[x].name, party[x].guest, party[x].status = true, party.length, ' active');
+
+                } else {
+                    message(party[x].name, party[x].guest, party[x].status, party.length, '');
+                }
+
+            }
 
         }
 
-        function message(m, person, c, id) {
-            console.log('holis');
+        function message(m, person, c, id, clase) {
 
-            output.innerHTML += '<div class="toggle" data-id="' + id + '" data-person="' + person +
-                '"><span> Guest Prime: ' + m +
+            output.innerHTML += '<div class= "toggle"' + clase + '" data-id="' + id + '" data-person="' + person +
+                '" data-status="' + c + '"><span> Guest Prime: ' + m +
                 '</span>  Extra Guest:' + person + '<span> confirm: ' + c + '</span></div>'
 
 
