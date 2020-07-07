@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>16 connect to API capit 13</title>
+    <style>
+        .box {
+            font-size: 1.5em;
+            background-color: rgb(146, 233, 172);
+            border: 1px solid rgb(29, 202, 29);
+            padding: 10px;
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>Course JavaScript Connect to API</div>
+    <div id="output"></div>
+    <input type="button" id="myButton" value="New Contry">
+    <input type="button" id="myGuess" value="Guess">
+    <input type="text" id="guess"><br><br>
+    <img src="" width="100px"><br>
+    <div id="output1" class="box"></div>
+    <div id="output2" class="box"></div>
+    <script>
+        window.onload = init;
+        let pick = "";
+
+        function init() {
+            document.getElementById('myButton').addEventListener('click', myLoarder, false);
+
+            document.getElementById('myGuess').addEventListener('click', guessWord, false);
+
+            document.getElementById('guess').addEventListener('keypress', () => {
+                let guess = document.getElementById('guess')
+                if (guess !== "") {}
+                document.getElementById('output').innerHTML = "";
+
+            })
+        }
+
+
+
+        function myLoarder() { //cargar la data request
+            let xHR = new XMLHttpRequest();
+            xHR.onload = rOutput;
+            xHR.open('get', 'https://restcountries.eu/rest/v2/all', true);
+            xHR.send();
+        }
+
+        function guessWord() {
+            let message = document.getElementById(output);
+            let gword = document.getElementById('guess').value;
+
+            if (gword !== "") {
+                let userGuess = '';
+                gword.toLowerCase();
+                if (pick.name) {
+                    for (let x = 0; x < pick.name.length; x++) {
+                        if (x >= gword.length) {
+                            break;
+                        }
+                        if (gword[x] == pick.name[x].toLowerCase()) {
+                            userGuess += gword[x];
+                        } else {
+                            userGuess += '-';
+                        }
+                    }
+
+                    console.log(userGuess);
+                    document.getElementById('output2').innerHTML = userGuess;
+                    if (userGuess.length == pick.name.length) {
+
+                        document.getElementById('output').innerHTML = '<H2>GANADOR COINCIDEN</H2>';
+                    } else {
+                        document.getElementById('output').innerHTML = '';
+                    }
+                }
+
+            } else {
+                document.getElementById('output').innerHTML = '<H2>Por favor Ingrese un Valor para Iniciar</H2>';
+
+            }
+
+
+        }
+
+        function rOutput() { //funcion externa para pasar los datos
+            /*  console.log(this.responseText); //pasa los datos del API */
+            let myObjet = JSON.parse(this.responseText); //pasa a JSON para tener los datos organizados.
+            pick = myObjet[Math.floor(Math.random() * myObjet.length)];
+            let countw = '';
+            for (let x = 0; x < pick.name.length; x++) {
+                countw += "-";
+
+            }
+            document.querySelector('img').src = pick.flag;
+            document.getElementById('output1').innerHTML = shuffleWord(pick.name);
+            document.getElementById('output2').innerHTML = countw;
+        }
+
+        function shuffleWord(w) {
+            let response = '';
+            w = w.split('');
+            while (w.length > 0) {
+                response += w.splice(Math.floor(Math.random() * w.length), 1)
+            }
+            return response.toLocaleLowerCase();
+
+
+
+            console.log(w);
+        }
+    </script>
+
+</body>
+
+</html>
