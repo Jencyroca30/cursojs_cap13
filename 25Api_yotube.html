@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>25 API_Yotube capit 13</title>
+
+</head>
+
+<body>
+    <div id="output"> Course JavaScript</div>
+    <input type="text" id="searchYotube">
+    <input type="button" id="search" value="Search Yotube">
+    <div id="output1"></div>
+
+    <script>
+        // GET https://www.googleapis.com/youtube/v3/search/?part=snippet&key=AIzaSyCK5GYKZY6ky17LZhMHigO2f0zipgsaJEw
+        //otros parametros a la url: &q(query para que realice la busqueda de los videos, ejemplo: videos de CRM); &maxResults: resultado
+        let quest = ''
+        window.onload = init;
+        ySearch();
+
+        function init() {
+
+            document.getElementById('search').addEventListener('click', ySearch, false);
+        }
+
+        function ySearch() {
+            quest = document.getElementById('searchYotube').value;
+            let url =
+                `https://www.googleapis.com/youtube/v3/search/?part=snippet&key=AIzaSyCK5GYKZY6ky17LZhMHigO2f0zipgsaJEw&q=${quest}&maxResults=50`
+            getJSON(url, function (data) {
+                showResuls(data.items);
+
+            })
+        }
+
+        function showResuls(result) {
+            let html = "";
+            for (let value in result) {
+                console.log(result[value]);
+                let title = result[value].snippet.title;
+                let description = result[value].snippet.description;
+                let chanel = result[value].snippet.channelTitle;
+                let img = result[value].snippet.thumbnails.default.url;
+                let idvideo = result[value].id.videoId;
+                let linkyotube = 'https://www.youtube.com/watch?v=' +
+                    idvideo;
+
+                html += '<div><h1>' + chanel + '</h1><br><h3>' + title + '</h3><p>' + description + '</p><a href="' +
+                    linkyotube + '" target="_blank"><img src="' +
+                    img + '"></a></div>';
+            }
+            document.getElementById('output1').innerHTML = html;
+        }
+
+        function getJSON(url, callback) {
+            let xhr = new XMLHttpRequest();
+            xhr.open('get', url, true);
+            xhr.responseType = 'json';
+            xhr.onload = function () {
+                if (xhr.status == 200) {
+                    callback(xhr.response);
+                }
+            }
+            xhr.send();
+
+        }
+    </script>
+
+</body>
+
+</html>
