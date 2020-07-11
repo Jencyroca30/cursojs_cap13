@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30 capitulo 13 JSON_AJAX</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        .box {
+            border: 1px solid beige;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0px 1px 4px 0px #333;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        span {
+
+            margin: 10px;
+
+        }
+
+        .body {
+            margin: 1Opx;
+            text-align: justify;
+            padding: 20px;
+        }
+
+        .textcenter {
+            text-align: center;
+            color: green;
+        }
+
+        .marginbutton {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="output">Course Complete JavaScript</div>
+    <input type="button" id="load" value="Load" class="btn btn-primary marginbutton">
+    <div id="output1"></div>
+    <script>
+        let posts = [];
+        window.onload = init;
+
+        function init() {
+            document.getElementById('load').addEventListener('click', search, false);
+
+        }
+
+        function search() {
+            let url = 'https://jsonplaceholder.typicode.com/posts';
+            getJSON(url, function (data) {
+                showResults(data);
+
+            })
+
+        }
+        //funcion asincrona 
+        async function showResults(results) {
+            /*  console.log(results); */
+            let html = document.getElementById('output1');
+            posts = await results;
+
+            for (let x = 0; x < posts.length; x++) {
+                console.log(posts[x].id, posts[x].title);
+
+                html.innerHTML += '<div class="box"><span>' + posts[x].id + '</span><h2 class="textcenter">' +
+                    posts[
+                        x].title + '</h2><div class="body">' + posts[x].body + '</div></div>'
+            }
+        }
+
+        function getJSON(url, callback) {
+            let xhr = new XMLHttpRequest();
+            xhr.open('get', url, true);
+            xhr.responseType = 'json';
+            xhr.onload = function () {
+                if (xhr.status == 200) {
+                    callback(xhr.response);
+                }
+            }
+            xhr.send();
+
+
+
+        }
+    </script>
+</body>
+
+</html>

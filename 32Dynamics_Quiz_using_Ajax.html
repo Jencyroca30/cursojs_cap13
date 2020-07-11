@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>32 capit 13</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        .title {
+            color: #b48608;
+            font-family: 'Droid serif', serif;
+            font-size: 36px;
+            font-weight: 400;
+            font-style: italic;
+            line-height: 44px;
+            margin: 12px;
+            text-align: center;
+        }
+
+        .box {
+            margin: 1Opx;
+            text-align: justify;
+            padding: 20px;
+            font-family: 'Droid serif', serif;
+            font-size: 20px;
+            font: outline;
+            color: rgb(87, 84, 84);
+            box-shadow: 0 4px 8px 0 rgba(10, 212, 27, 0.2);
+            transition: 0.3s;
+
+        }
+
+        .answer {
+
+            text-align: justify;
+            font-family: 'Droid serif', serif;
+            font-size: 16px;
+            color: green;
+            margin: 10px;
+        }
+
+        .active {
+            padding: 20px;
+            background-color: #f8d7da;
+            color: #721c24;
+            margin-bottom: 15px;
+        }
+
+        .marginbutton {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="title" class="title">Questions with used JSON</div>
+    <div id="output"></div>
+    <div id="output1"></div>
+    <input type="button" id="prev" value="Prev" class="btn btn-secondary marginbutton">
+    <input type="button" id="next" value="next" class="btn btn-secondary marginbutton">
+    <script>
+        window.onload = init;
+        let t = document.getElementById('title');
+        let output = document.getElementById('output');
+        let output1 = document.getElementById('output1');
+        let myData = {};
+        let page = 0;
+        let score = 0;
+        let userAnswer = [];
+        document.innerHTML = t;
+
+
+        document.getElementById('next').addEventListener('click', function () {
+            move(page + 1);
+        })
+
+        document.getElementById('prev').addEventListener('click', function () {
+            move(page - 1);
+        })
+
+        function move(a) {
+            if (a >= myData.length) {
+
+                console.log('Gameover');
+                sumary();
+                return;
+            }
+            if (a <= (myData.length) - (myData.length - (-1))) {
+
+                console.log('Out of Range');
+
+            } else {
+
+                page = a;
+                buildPage();
+            }
+        }
+
+        function sumary() {
+            score = 0;
+            let html = '<h1 class="title">Sumary</h1>';
+            for (let x = 0; x < myData.length; x++) {
+                if (myData[x].correct == userAnswer[x]) {
+                    html += '<p class="answer">Question: "' + (x + 1) + '"Correct </p>';
+
+                    score++;
+                } else {
+                    html += '<p class="answer">Question: "' + (x + 1) + '"Worng </p>';
+                }
+
+            }
+            html += '<p class="box">"You score was" ' + score + ' "out of ' + myData.length + '" </p>';
+
+            output1.innerHTML = html;
+
+
+        }
+
+        output.addEventListener('click', function () {
+            userAnswer[page] = Number(event.target.dataset.index);
+
+            for (let x = 0; x < this.children.length; x++) {
+                this.children[x].classList.remove('active');
+
+            }
+
+
+            if (!event.target.classList.contains('box')) {
+                userAnswer[page] = Number(event.target.dataset.index);
+                event.target.classList.add('active');
+            }
+
+        })
+
+        function init() {
+
+            getJSON('http://localhost:3000/questions');
+
+        }
+
+        function buildPage() {
+
+            let p = myData[page];
+            console.log(p);
+
+            let html = '';
+
+            html += '<div class="box">' + p.question + '</div>';
+
+            for (let x = 0; x < p.anwers.length; x++) {
+
+                let anwers = x == p.correct ? true : false;
+
+                let aClass = userAnswer[page] == x ? 'active' : '';
+
+                html += '<div class=" answer ' + aClass + '" data-id="' + anwers + '<div class= "answer" data-index="' +
+                    x +
+                    '" > ' + p.anwers[x] + '</div></div>'
+
+
+            }
+
+
+            output.innerHTML = html;
+        }
+
+
+        function getJSON(url) {
+            fetch(url, {
+                    method: 'GET'
+                })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (myJson) {
+                    myData = myJson;
+                    buildPage();
+
+                });
+
+
+        }
+    </script>
+</body>
+
+
+
+</html>

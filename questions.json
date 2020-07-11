@@ -1,0 +1,29 @@
+{
+    "questions": [{
+
+            "question": "What color is an apple",
+            "anwers": ["blue", "red", "purple"],
+            "correct": 1
+        },
+
+        {
+
+            "question": "What Color is Grass",
+            "anwers": ["Green", "red", "purple"],
+            "correct": 0
+        },
+
+        {
+
+            "question": "The skype is Blue",
+            "anwers": ["true", "false"],
+            "correct": 0
+        },
+        {
+
+            "question": "How do you spell 5",
+            "anwers": ["one", "two", "tree", "four", "five"],
+            "correct": 4
+        }
+    ]
+}
